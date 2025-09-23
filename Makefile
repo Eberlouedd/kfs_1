@@ -5,7 +5,7 @@ all: $(ISO)
 
 $(KERNEL): boot/boot.asm kernel/kernel.c linker.ld
 	nasm -f elf32 boot/boot.asm -o boot.o
-	gcc -m32 -ffreestanding -c kernel/kernel.c -o kernel.o
+	gcc -m32 -ffreestanding -fno-builtin -fno-stack-protector -nostdlib -nodefaultlibs -c kernel/kernel.c -o kernel.o
 	ld -m elf_i386 -T linker.ld boot.o kernel.o -o $(KERNEL)
 
 $(ISO): $(KERNEL) iso/boot/grub/grub.cfg
@@ -21,9 +21,6 @@ iso/boot/grub/grub.cfg:
 	echo '    multiboot /boot/kernel.bin' >> iso/boot/grub/grub.cfg
 	echo '    boot' >> iso/boot/grub/grub.cfg
 	echo '}' >> iso/boot/grub/grub.cfg
-
-run: $(ISO)
-	qemu-system-i386 -cdrom $(ISO) -boot d
 
 clean:
 	rm -f *.o $(KERNEL) $(ISO)

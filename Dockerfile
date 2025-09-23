@@ -10,4 +10,4 @@ RUN apt-get update && \
 WORKDIR /kfs
 COPY . .
 
-CMD ["make", "run"]
+CMD ["make"]
