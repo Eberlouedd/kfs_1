@@ -1,5 +1,6 @@
 KERNEL = kernel.bin
 ISO = kernel.iso
+GRUBDIR := /usr/lib/grub/i386-pc
 
 all: $(ISO)
 
@@ -11,7 +12,7 @@ $(KERNEL): boot/boot.asm kernel/kernel.c linker.ld
 $(ISO): $(KERNEL) iso/boot/grub/grub.cfg
 	mkdir -p iso/boot/grub
 	cp $(KERNEL) iso/boot/kernel.bin
-	grub-mkrescue -o $(ISO) iso
+	grub-mkrescue -d $(GRUBDIR) -o $(ISO) iso
 
 iso/boot/grub/grub.cfg:
 	mkdir -p iso/boot/grub
