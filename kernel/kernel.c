@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "include/helpers.h"
 
 #define VGA_MEM ((volatile uint16_t*)0xB8000)
 #define VGA_WIDTH 80
@@ -12,10 +13,9 @@ void clear_screen() {
 }
 
 void print(const char *s) {
-    int i = 0;
-    while (s[i]) {
+    size_t len = strlen(s);
+    for (size_t i = 0; i < len; i++) {
         VGA_MEM[i] = ((uint16_t)vga_color << 8) | (uint8_t)s[i];
-        i++;
     }
 }
 
